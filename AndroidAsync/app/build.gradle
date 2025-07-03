@@ -1,0 +1,55 @@
+plugins {
+    id "com.android.library"
+}
+
+android {
+    namespace 'com.koushikdutta.async'
+    compileSdk 34
+
+    defaultConfig {
+//        applicationId "com.koushikdutta.async"
+        minSdk 28
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    task makeJar(type: Copy) {
+        //删除存在的
+        delete 'build/libs/async.jar'
+        //设置拷贝的文件
+        from('build/intermediates/aar_main_jar/release/')
+        //打进jar包后的文件目录
+        into('build/libs/')
+        //将classes.jar放入build/libs/目录下
+        //include ,exclude参数来设置过滤
+        include('classes.jar')
+        //重命名
+        rename ('classes.jar', 'async.jar')
+    }
+
+    makeJar.dependsOn(build)
+
+}
+
+dependencies {
+    compileOnly group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.60'
+    compileOnly group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.60'
+    implementation libs.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}
