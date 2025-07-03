@@ -49,5 +49,3 @@ android {
         androidTestImplementation 'com.google.android.gms:play-services-base:17.0.0'
     }
 }
-
-apply from: 'maven.gradle'
